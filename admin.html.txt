@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>装修小程序后台管理</title>
+<script src="./config.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{padding:16px;background:#f4f5f7;}
+.box{background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;}
+h3{margin-bottom:12px;color:#222;}
+label{display:block;margin:8px 0 4px;font-size:14px;color:#444;}
+input,textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;}
+textarea{min-height:80px;}
+button{padding:10px 16px;border:none;border-radius:8px;background:#2563eb;color:#fff;margin-right:8px;margin-top:10px;font-size:14px;}
+.danger{background:#dc2626;}
+.tip{font-size:12px;color:#777;margin:6px 0;}
+</style>
+</head>
+<body>
+<div class="box">
+  <h3>基础信息（电话、地址、标题）</h3>
+  <label>网站标题</label>
+  <input id="cfg_title">
+  <label>联系电话</label>
+  <input id="cfg_tel">
+  <label>微信</label>
+  <input id="cfg_wx">
+  <label>地址</label>
+  <input id="cfg_addr">
+</div>
+
+<div class="box">
+  <h3>轮播图（JSON格式，不懂可以直接复制原有结构改图片链接）</h3>
+  <div class="tip">格式：[{"title":"xxx","img":"图片地址"},...]</div>
+  <textarea id="cfg_swiper"></textarea>
+</div>
+
+<div class="box">
+  <h3>案例列表</h3>
+  <div class="tip">新增/删除案例直接在这里修改JSON</div>
+  <textarea id="cfg_case"></textarea>
+</div>
+
+<div class="box">
+  <h3>套餐配置</h3>
+  <textarea id="cfg_pkg"></textarea>
+</div>
+
+<div class="box">
+  <button onclick="saveAll()">✅ 保存修改</button>
+  <button onclick="loadAll()">🔄 重置读取</button>
+  <button class="danger" onclick="Store.reset()">🗑️ 清空恢复默认</button>
+  <div class="tip">保存后回到首页 index.html 刷新即可看到新内容</div>
+  <div class="tip">👉 客户访问地址：index.html | 后台地址：admin.html</div>
+</div>
+
+<script>
+function loadAll(){
+  const c = window.SITE_CONFIG
+  document.getElementById('cfg_title').value = c.base.title
+  document.getElementById('cfg_tel').value = c.base.tel
+  document.getElementById('cfg_wx').value = c.base.wx
+  document.getElementById('cfg_addr').value = c.base.address
+  document.getElementById('cfg_swiper').value = JSON.stringify(c.swiper,null,2)
+  document.getElementById('cfg_case').value = JSON.stringify(c.cases,null,2)
+  document.getElementById('cfg_pkg').value = JSON.stringify(c.packages,null,2)
+}
+function saveAll(){
+  try{
+    window.SITE_CONFIG.base.title = document.getElementById('cfg_title').value
+    window.SITE_CONFIG.base.tel = document.getElementById('cfg_tel').value
+    window.SITE_CONFIG.base.wx = document.getElementById('cfg_wx').value
+    window.SITE_CONFIG.base.address = document.getElementById('cfg_addr').value
+    window.SITE_CONFIG.swiper = JSON.parse(document.getElementById('cfg_swiper').value)
+    window.SITE_CONFIG.cases = JSON.parse(document.getElementById('cfg_case').value)
+    window.SITE_CONFIG.packages = JSON.parse(document.getElementById('cfg_pkg').value)
+    Store.save()
+    alert('保存成功！打开 index.html 刷新查看效果')
+  }catch(e){
+    alert('JSON格式错误！检查逗号、引号')
+    console.error(e)
+  }
+}
+loadAll()
+</script>
+</body>
+</html>
