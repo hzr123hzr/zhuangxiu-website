@@ -2,256 +2,94 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>XX装饰</title>
-<script src="./config.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>璟象装饰｜汕头装修设计、旧房改造、新房整装</title>
+<script src="config.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
-body{background:#f7f7f7;padding-bottom:70px;color:#333;}
-a{text-decoration:none;color:inherit;}
-
-/* 轮播 */
-.swiper-wrap{width:100%;overflow:hidden;position:relative;height:42vw;max-height:320px;}
-.swiper{display:flex;transition:transform .4s ease;height:100%;}
-.swiper-item{min-width:100%;height:100%;position:relative;}
-.swiper-item img{width:100%;height:100%;object-fit:cover;}
-.swiper-text{position:absolute;left:0;bottom:0;width:100%;background:linear-gradient(transparent,#0007);color:#fff;padding:14px;font-size:15px;}
-
-/* 快捷按钮 */
-.quick-box{display:grid;grid-template-columns: 1fr 1fr 1fr 1fr;gap:10px;padding:14px;background:#fff;margin:12px;border-radius:12px;}
-.quick-item{text-align:center;padding:10px;}
-.quick-item .icon{font-size:24px;margin-bottom:4px;}
-.quick-item .txt{font-size:13px;color:#555;}
-
-/* 板块通用 */
-.section{background:#fff;margin:12px;border-radius:12px;padding:16px;}
-.section-title{font-size:17px;font-weight:bold;margin-bottom:14px;border-left:4px solid #2563eb;padding-left:8px;}
-
-/* 服务 */
-.service-list{display:grid;grid-template-columns: 1fr 1fr;gap:12px;}
-.service-card{border:1px solid #eee;border-radius:10px;padding:14px;}
-.service-card .icon{font-size:22px;margin-bottom:6px;color:#2563eb;}
-.service-card h4{font-size:15px;margin-bottom:4px;}
-.service-card p{font-size:12px;color:#666;line-height:1.4;}
-
-/* 优势 */
-.adv-list{display:flex;flex-wrap:wrap;gap:8px;}
-.adv-tag{background:#eff6ff;color:#2563eb;padding:6px 10px;border-radius:6px;font-size:13px;}
-
-/* 案例 */
-.case-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;}
-.case-scroll::-webkit-scrollbar{height:4px;}
-.case-card{min-width:200px;border-radius:10px;overflow:hidden;border:1px solid #eee;background:#fff;}
-.case-card img{width:100%;height:130px;object-fit:cover;}
-.case-info{padding:10px;}
-.case-info h4{font-size:14px;margin-bottom:3px;}
-.case-info .sub{font-size:12px;color:#777;}
-
-/* 套餐 */
-.pkg-item{border:1px solid #eee;border-radius:10px;padding:14px;margin-bottom:12px;}
-.pkg-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.pkg-top h4{font-size:16px;}
-.pkg-price{color:#dc2626;font-weight:bold;}
-.pkg-tip{font-size:12px;color:#777;margin-bottom:8px;}
-.pkg-list{font-size:13px;line-height:1.6;}
-.pkg-list .in{color:#16a34a;}
-.pkg-list .out{color:#999;}
-
-/* 预约表单 */
-.form-box{background:#fff;margin:12px;border-radius:12px;padding:16px;}
-.form-title{font-size:17px;font-weight:bold;margin-bottom:14px;text-align:center;color:#2563eb;}
-input,select{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;margin-bottom:10px;font-size:15px;}
-.btn-submit{width:100%;background:#2563eb;color:#fff;border:none;padding:13px;border-radius:8px;font-size:16px;font-weight:bold;}
-
-/* 底部导航 */
-.nav-bar{position:fixed;bottom:0;left:0;width:100%;height:64px;background:#fff;display:flex;border-top:1px solid #eee;z-index:99;}
-.nav-item{flex:1;text-align:center;padding-top:8px;font-size:12px;color:#666;}
-.nav-item.active{color:#2563eb;}
-.nav-item .n-icon{font-size:20px;display:block;margin-bottom:2px;}
-
-/* 悬浮电话 */
-.float-tel{position:fixed;right:16px;bottom:80px;width:48px;height:48px;border-radius:50%;background:#2563eb;color:#fff;text-align:center;line-height:48px;font-size:22px;z-index:98;}
-
-/* 页面区块切换，默认首页显示 */
-.page{display:none;}
-.page.active{display:block;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, sans-serif}
+body{color:#333;background:#f8f8f8}
+header{background:#222;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:20px;font-weight:bold}
+nav a{color:#fff;text-decoration:none;margin-left:18px}
+.banner{background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('https://picsum.photos/id/1048/1600/600');background-size:cover;background-position:center;color:#fff;text-align:center;padding:100px 20px}
+.banner h1{font-size:36px;margin-bottom:12px}
+.banner p{font-size:18px;margin-bottom:24px}
+.btn{background:#c89b67;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;display:inline-block;border:none;cursor:pointer;font-size:16px}
+section{max-width:1200px;margin:60px auto;padding:0 20px}
+.title{text-align:center;font-size:28px;margin-bottom:40px}
+.case-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px #00000010}
+.card img{width:100%;height:220px;object-fit:cover}
+.card .info{padding:16px}
+.card h3{margin-bottom:8px}
+.pack{background:#fff;padding:30px;border-radius:12px;margin-bottom:20px}
+.pack h3{color:#c89b67;margin-bottom:10px}
+.contact{background:#222;color:#fff;padding:50px 20px;text-align:center}
+footer{text-align:center;padding:20px;background:#111;color:#aaa;font-size:14px}
 </style>
 </head>
 <body>
-<div id="page-home" class="page active">
-  <div class="swiper-wrap">
-    <div class="swiper" id="swiperDom"></div>
-  </div>
-
-  <div class="quick-box">
-    <a href="#form" class="quick-item"><div class="icon">📝</div><div class="txt">免费量房</div></a>
-    <a href="#page-case" class="quick-item"><div class="icon">🖼️</div><div class="txt">装修案例</div></a>
-    <a href="#page-package" class="quick-item"><div class="icon">🧮</div><div class="txt">报价参考</div></a>
-    <a href="tel:" class="quick-item"><div class="icon">📞</div><div class="txt">联系设计师</div></a>
-  </div>
-
-  <div class="section">
-    <div class="section-title">我们的服务</div>
-    <div class="service-list" id="serviceDom"></div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">我们的优势</div>
-    <div class="adv-list" id="advDom"></div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">热门案例</div>
-    <div class="case-scroll" id="caseHomeDom"></div>
-  </div>
-
-  <div class="form-box" id="form">
-    <div class="form-title">免费获取方案+报价</div>
-    <input type="text" placeholder="您的姓名" id="name">
-    <input type="tel" placeholder="联系电话" id="phone">
-    <input type="text" placeholder="小区名称" id="community">
-    <input type="text" placeholder="面积/户型" id="area">
-    <select id="need">
-      <option value="">选择需求类型</option>
-      <option>新房整装</option>
-      <option>旧房改造</option>
-      <option>商铺工装</option>
-    </select>
-    <button class="btn-submit" onclick="submitForm()">立即预约</button>
-  </div>
+<header>
+  <div class="logo">璟象装饰</div>
+  <nav>
+    <a href="#home">首页</a>
+    <a href="#case">装修案例</a>
+    <a href="#package">装修套餐</a>
+    <a href="#contact">联系我们</a>
+  </nav>
+</header>
+<div class="banner" id="home">
+  <h1>专注汕头整装｜旧房改造 · 新房装修</h1>
+  <p>免费上门量房｜设计方案｜报价预算</p>
+  <a href="#contact" class="btn">预约免费量房</a>
 </div>
-
-<div id="page-case" class="page">
-  <div class="section">
-    <div class="section-title">全部案例</div>
-    <div id="caseAllDom"></div>
-  </div>
-</div>
-
-<div id="page-package" class="page">
-  <div class="section">
-    <div class="section-title">装修套餐</div>
-    <div id="pkgDom"></div>
-    <div style="margin-top:12px;font-size:12px;color:#777;">⚠️套餐为参考价，户型拆改不同价格有差异，预约免费量房出精准报价</div>
-  </div>
-</div>
-
-<div id="page-mine" class="page">
-  <div class="section">
-    <div class="section-title">联系我们</div>
-    <p style="line-height:1.8;">📞电话：<span id="showTel"></span></p>
-    <p style="line-height:1.8;">📍地址：<span id="showAddr"></span></p>
-    <p style="line-height:1.8;">💬微信：<span id="showWx"></span></p>
-  </div>
-  <div class="section">
-    <div class="section-title">关于我们</div>
-    <p style="line-height:1.7;color:#555;">本地专业装修团队，专注新房整装、旧房翻新、商业工装，不转包、透明施工，质保售后完善。</p>
-  </div>
-  <div class="section">
-    <div class="section-title">后台入口</div>
-    <a href="admin.html" style="color:#2563eb;">👉 打开内容管理后台</a>
-  </div>
-</div>
-
-<a class="float-tel" id="floatTel" href="tel:">📞</a>
-
-<div class="nav-bar">
-  <div class="nav-item active" data-page="page-home"><span class="n-icon">🏠</span>首页</div>
-  <div class="nav-item" data-page="page-case"><span class="n-icon">🖼️</span>案例</div>
-  <div class="nav-item" data-page="page-package"><span class="n-icon">📋</span>套餐</div>
-  <div class="nav-item" data-page="page-mine"><span class="n-icon">👤</span>我的</div>
-</div>
-
+<section id="case">
+  <h2 class="title">精选装修案例</h2>
+  <div class="case-list" id="caseWrap"></div>
+</section>
+<section id="package">
+  <h2 class="title">装修套餐</h2>
+  <div id="packWrap"></div>
+</section>
+<section class="contact" id="contact">
+  <h2 class="title">联系我们</h2>
+  <p>电话：<span id="tel"></span></p>
+  <p>地址：<span id="addr"></span></p>
+  <br>
+  <a href="admin.html" class="btn">后台管理入口</a>
+</section>
+<footer>©2026 璟象装饰 版权所有</footer>
 <script>
-// 导航切换
-document.querySelectorAll('.nav-item').forEach(item=>{
-  item.onclick = ()=>{
-    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'))
-    item.classList.add('active')
-    const target = item.dataset.page
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-    document.getElementById(target).classList.add('active')
-  }
-})
-
-// 渲染页面
 function render(){
-  const cfg = window.SITE_CONFIG
-  document.title = cfg.base.title
-  document.getElementById('showTel').innerText = cfg.base.tel
-  document.getElementById('showAddr').innerText = cfg.base.address
-  document.getElementById('showWx').innerText = cfg.base.wx
-  document.getElementById('floatTel').href = `tel:${cfg.base.tel}`
+  const site = SITE_CONFIG.base;
+  document.getElementById('tel').innerText = site.tel;
+  document.getElementById('addr').innerText = site.addr;
 
-  // 轮播
-  let swiperHtml = ''
-  cfg.swiper.forEach(s=>{
-    swiperHtml += `<div class="swiper-item"><img src="${s.img}"><div class="swiper-text">${s.title}</div></div>`
-  })
-  document.getElementById('swiperDom').innerHTML = swiperHtml
-
-  // 服务
-  let serHtml = ''
-  cfg.service.forEach(s=>{
-    serHtml += `<div class="service-card"><div class="icon">${s.icon}</div><h4>${s.name}</h4><p>${s.desc}</p></div>`
-  })
-  document.getElementById('serviceDom').innerHTML = serHtml
-
-  // 优势
-  let advHtml = ''
-  cfg.advantage.forEach(a=>advHtml += `<span class="adv-tag">${a}</span>`)
-  document.getElementById('advDom').innerHTML = advHtml
-
-  // 首页案例横向
-  let caseH = ''
-  cfg.cases.forEach(c=>{
-    caseH += `<div class="case-card"><img src="${c.img}"><div class="case-info"><h4>${c.name}</h4><div class="sub">${c.area}｜${c.style}</div></div></div>`
-  })
-  document.getElementById('caseHomeDom').innerHTML = caseH
-
-  // 案例全部
-  let caseA = ''
-  cfg.cases.forEach(c=>{
-    caseA += `<div class="case-card" style="margin-bottom:12px;"><img src="${c.img}"><div class="case-info"><h4>${c.name}【${c.tag}】</h4><div class="sub">${c.area}｜${c.style}</div><p style="font-size:12px;color:#666;margin-top:4px;">${c.desc}</p></div></div>`
-  })
-  document.getElementById('caseAllDom').innerHTML = caseA
-
-  // 套餐
-  let pkgH = ''
-  cfg.packages.forEach(p=>{
-    const inStr = p.include.map(x=>`✅ ${x}`).join('<br>')
-    const outStr = p.exclude.map(x=>`❌ ${x}`).join('<br>')
-    pkgH += `
-      <div class="pkg-item">
-        <div class="pkg-top"><h4>${p.name}</h4><div class="pkg-price">${p.price}</div></div>
-        <div class="pkg-tip">${p.tip}</div>
-        <div class="pkg-list">
-          <div class="in">${inStr}</div>
-          <div class="out">${outStr}</div>
-        </div>
+  const caseDom = document.getElementById('caseWrap');
+  caseDom.innerHTML = '';
+  SITE_CONFIG.cases.forEach(item=>{
+    caseDom.innerHTML += `
+    <div class="card">
+      <img src="${item.img}" alt="${item.title}">
+      <div class="info">
+        <h3>${item.title}</h3>
+        <p>${item.desc}</p>
       </div>
-    `
+    </div>`
   })
-  document.getElementById('pkgDom').innerHTML = pkgH
-}
 
-// 表单提交（这里是前端模拟，后期对接后端/表单收集）
-function submitForm(){
-  const data = {
-    name:document.getElementById('name').value,
-    phone:document.getElementById('phone').value,
-    community:document.getElementById('community').value,
-    area:document.getElementById('area').value,
-    need:document.getElementById('need').value
-  }
-  if(!data.name || !data.phone){
-    alert('请填写姓名和联系电话')
-    return
-  }
-  alert('提交成功！我们设计师会尽快联系您')
+  const packDom = document.getElementById('packWrap');
+  packDom.innerHTML = '';
+  SITE_CONFIG.packages.forEach(item=>{
+    packDom.innerHTML += `
+    <div class="pack">
+      <h3>${item.name}</h3>
+      <p>${item.desc}</p>
+      <p style="margin-top:10px;color:#c89b67;font-weight:bold">${item.price}</p>
+    </div>`
+  })
 }
-
-render()
+render();
 </script>
 </body>
 </html>
