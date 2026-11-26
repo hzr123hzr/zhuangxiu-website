@@ -3,125 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>璟象装饰｜后台管理</title>
+<title>璟象装饰｜内容管理</title>
 <style>
-*{box-sizing:border-box;font-family:system-ui, sans-serif;}
-body{max-width:1100px;margin:24px auto;padding:0 20px;background:#f5f7fa;color:#222;}
-.card{background:#fff;padding:22px;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 10px #00000010;}
-h3{margin-top:0;color:#111;border-left:4px solid #2563eb;padding-left:10px}
-input,textarea,button{width:100%;padding:11px;margin:8px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}
-button{background:#2563eb;color:#fff;border:none;cursor:pointer;font-weight:500}
-button.success{background:#16a34a}
-button.danger{background:#dc2626}
-.upload-box{border:2px dashed #ccc;padding:24px;text-align:center;border-radius:10px;margin:10px 0}
-.preview-img{max-width:280px;margin:10px 0;border-radius:6px}
-.row{display:flex;gap:12px}
-.row button{flex:1}
-.item-block{border:1px solid #eee;padding:14px;border-radius:8px;margin:10px 0}
+*{box-sizing:border-box;font-family:system-ui}
+body{max-width:1100px;margin:20px auto;padding:0 16px;background:#f5f7fa}
+.box{background:#fff;padding:20px;border-radius:10px;margin-bottom:16px}
+h3{margin:0 0 12px 0;border-left:4px solid #2b549c;padding-left:8px}
+input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:6px}
+button{padding:10px 16px;border:none;border-radius:6px;background:#2563eb;color:white;margin:4px;cursor:pointer}
+.btn-success{background:#16a34a}
+.upload-area{border:2px dashed #ccc;padding:16px;text-align:center;border-radius:8px}
+.img-preview{max-width:260px;margin-top:8px;border-radius:6px}
 </style>
 </head>
 <body>
-<div class="card">
-  <h3>📷 图片上传（生成本地链接）</h3>
-  <div class="upload-box">
-    <input type="file" id="imgFile" accept="image/*">
-    <p>选择图片后自动生成预览链接，直接复制到下面表单</p>
+<div class="box">
+  <h3>图片上传</h3>
+  <div class="upload-area">
+    <input type="file" id="imgInput" accept="image/*">
   </div>
-  <p>图片链接：<input id="imgLinkOut" readonly></p>
-  <img class="preview-img" id="imgPreview">
+  <input id="imgOut" readonly placeholder="图片链接">
+  <img class="img-preview" id="imgPreview">
 </div>
 
-<div class="card">
-  <h3>🏢 基础信息</h3>
-  <label>公司名称</label>
-  <input id="siteName" value="璟象装饰">
-  <label>联系电话</label>
-  <input id="sitePhone" value="13800000000">
-  <label>公司简介</label>
-  <textarea id="siteDesc" rows="4">专注家装、旧房改造、全屋整装，匠心设计，透明报价，一站式装修服务</textarea>
+<div class="box">
+  <h3>基础信息</h3>
+  <input id="siteName" placeholder="公司名称" value="璟象装饰">
+  <input id="sitePhone" placeholder="联系电话" value="13800000000">
+  <textarea id="siteDesc" rows="4" placeholder="公司简介">专注家装、旧房改造、全屋整装，设计施工一体化，透明装修</textarea>
 </div>
 
-<div class="card">
-  <h3>🏞️ Banner轮播（格式：标题,图片链接）</h3>
-  <textarea id="bannerArea" rows="6">[
-  {"title":"匠心整装 · 品质家装","img":""},
-  {"title":"旧房翻新改造","img":""}
+<div class="box">
+  <h3>Banner轮播</h3>
+  <textarea id="bannerTxt" rows="5">[
+{"title":"匠心整装，品质家装","img":""}
 ]</textarea>
 </div>
 
-<div class="card">
-  <h3>📋 装修案例</h3>
-  <textarea id="caseArea" rows="8">[
-  {"title":"现代简约三房","desc":"120㎡｜现代简约","img":""},
-  {"title":"奶油风两房","desc":"89㎡｜奶油风","img":""}
+<div class="box">
+  <h3>装修案例</h3>
+  <textarea id="caseTxt" rows="6">[
+{"title":"现代简约三房","desc":"120㎡现代简约","img":""}
 ]</textarea>
 </div>
 
-<div class="card">
-  <h3>📦 整装套餐</h3>
-  <textarea id="packageArea" rows="8">[
-  {"title":"刚需整装套餐","price":"899元/㎡","desc":"基础硬装+水电+墙面+地砖"},
-  {"title":"品质整装套餐","price":"1199元/㎡","desc":"含定制柜、厨卫全套"}
+<div class="box">
+  <h3>整装套餐</h3>
+  <textarea id="pkgTxt" rows="6">[
+{"title":"刚需整装套餐","price":"899元/㎡","desc":"基础硬装、水电、墙地砖"}
 ]</textarea>
 </div>
 
-<div class="row">
-  <button onclick="saveLocal()">保存到浏览器（临时）</button>
-  <button class="success" onclick="exportConfig()">导出config.json（上传到仓库！）</button>
-  <button class="danger" onclick="loadConfig()">读取配置</button>
+<div class="box">
+  <button onclick="loadLocal()">读取缓存</button>
+  <button onclick="saveLocal()">临时保存</button>
+  <button class="btn-success" onclick="downloadConfig()">导出 config.json</button>
 </div>
+
 <script>
 // 图片转base64
-document.getElementById('imgFile').onchange = async function(e){
+const imgInput = document.getElementById('imgInput');
+imgInput.onchange = function(e){
   const file = e.target.files[0];
   if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    const url = ev.target.result;
-    document.getElementById('imgLinkOut').value = url;
-    document.getElementById('imgPreview').src = url;
+  const r = new FileReader();
+  r.onload = ev=>{
+    document.getElementById('imgOut').value = ev.target.result;
+    document.getElementById('imgPreview').src = ev.target.result;
   }
-  reader.readAsDataURL(file);
+  r.readAsDataURL(file);
 }
 
-function getFormData(){
+function getData(){
   return {
     siteName: document.getElementById('siteName').value,
     sitePhone: document.getElementById('sitePhone').value,
     siteDesc: document.getElementById('siteDesc').value,
-    banner: JSON.parse(document.getElementById('bannerArea').value),
-    caseList: JSON.parse(document.getElementById('caseArea').value),
-    packageList: JSON.parse(document.getElementById('packageArea').value)
+    banner: JSON.parse(document.getElementById('bannerTxt').value),
+    caseList: JSON.parse(document.getElementById('caseTxt').value),
+    packageList: JSON.parse(document.getElementById('pkgTxt').value)
   }
 }
-function setFormData(d){
+function setData(d){
   document.getElementById('siteName').value = d.siteName;
   document.getElementById('sitePhone').value = d.sitePhone;
   document.getElementById('siteDesc').value = d.siteDesc;
-  document.getElementById('bannerArea').value = JSON.stringify(d.banner,null,2);
-  document.getElementById('caseArea').value = JSON.stringify(d.caseList,null,2);
-  document.getElementById('packageArea').value = JSON.stringify(d.packageList,null,2);
+  document.getElementById('bannerTxt').value = JSON.stringify(d.banner,null,2);
+  document.getElementById('caseTxt').value = JSON.stringify(d.caseList,null,2);
+  document.getElementById('pkgTxt').value = JSON.stringify(d.packageList,null,2);
 }
 function saveLocal(){
-  localStorage.setItem('siteData',JSON.stringify(getFormData()));
-  alert("✅ 临时保存到浏览器缓存，清缓存会丢失！记得导出json文件");
+  localStorage.setItem('cfg',JSON.stringify(getData()));
+  alert("临时保存到浏览器");
 }
-function loadConfig(){
-  const raw = localStorage.getItem('siteData');
-  if(raw){
-    setFormData(JSON.parse(raw));
-    alert("✅ 读取本地缓存成功");
-  }else alert("本地无缓存");
+function loadLocal(){
+  const raw = localStorage.getItem('cfg');
+  if(raw) setData(JSON.parse(raw));
+  alert(raw ? "读取成功" : "无缓存");
 }
-function exportConfig(){
-  const data = getFormData();
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+function downloadConfig(){
+  const blob = new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = "config.json";
   a.click();
-  alert("✅ 下载 config.json！把这个文件上传到github仓库，前台就会更新！");
+  alert("✅ 下载config.json！上传到github仓库即可更新网站！");
 }
 </script>
 </body>
 </html>
+
