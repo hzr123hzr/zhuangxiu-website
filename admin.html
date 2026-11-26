@@ -46,7 +46,7 @@ button.danger{background:#dc2626}
   </div>
 
   <div class="card">
-    <h3>🏞️ 轮播Banner（把上面图片链接填到img）</h3>
+    <h3>🏞️ 轮播Banner（JSON格式）</h3>
     <textarea id="bannerArea" rows="6"></textarea>
   </div>
 
@@ -92,6 +92,7 @@ async function login(){
     document.getElementById("loginBox").classList.add("hidden");
     document.getElementById("mainBox").classList.remove("hidden");
     await loadConfig();
+    alert("✅登录成功！");
   }else{
     alert("密码错误！");
   }
@@ -100,7 +101,7 @@ async function login(){
 async function uploadImage(){
   const file = document.getElementById("imgFile").files[0];
   if(!file) return alert("先选择图片");
-  if(file.size>200*1024) return alert("图片不能超过200KB！请压缩后上传");
+  if(file.size>200*1024) return alert("图片不能超过200KB！");
   const fd = new FormData();
   fd.append("img",file);
   const res = await fetch(`${API}/uploadImg`,{
@@ -112,7 +113,7 @@ async function uploadImage(){
   if(json.ok){
     document.getElementById("imgLinkOut").value = json.imgUrl;
     document.getElementById("imgPreview").src = json.imgUrl;
-    alert("✅上传成功，链接已生成！");
+    alert("✅上传成功");
   }else{
     alert("上传失败："+json.msg);
   }
