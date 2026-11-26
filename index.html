@@ -3,81 +3,142 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>璟象装饰</title>
+<title>璟象装饰｜装修公司</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{color:#333}
-header{background:#222;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
-.banner{width:100%;height:320px;display:flex;overflow:hidden}
-.banner-item{flex:0 0 100%;height:100%;background-size:cover;background-position:center;display:flex;align-items:center;padding-left:60px;color:#fff;font-size:32px;font-weight:bold}
-section{max-width:1200px;margin:40px auto;padding:0 20px}
-h2{margin-bottom:20px;color:#222}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
-.card{border:1px solid #eee;border-radius:10px;overflow:hidden}
-.card img{width:100%;height:180px;object-fit:cover}
-.card .info{padding:12px}
-footer{background:#222;color:#fff;text-align:center;padding:24px;margin-top:40px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, sans-serif;}
+:root{--main:#2563eb;--dark:#1f2937;--light:#f9fafb;}
+nav{background:#fff;box-shadow:0 2px 8px #00000012;position:sticky;top:0;z-index:99}
+.nav-wrap{max-width:1200px;margin:0 auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:bold;color:var(--main)}
+.nav-links a{margin-left:24px;color:#333;text-decoration:none}
+.nav-links a:hover{color:var(--main)}
+.banner{height:480px;background:#eee;position:relative;overflow:hidden;}
+.banner-item{position:absolute;width:100%;height:100%;background-size:cover;background-position:center;display:flex;align-items:center;padding-left:10%;color:#fff;background-color:#0006}
+.banner-text h2{font-size:42px;margin-bottom:12px}
+.banner-text p{font-size:18px;margin-bottom:20px}
+.btn{background:var(--main);color:#fff;padding:12px 26px;border-radius:8px;text-decoration:none;display:inline-block}
+.container{max-width:1200px;margin:0 auto;padding:60px 20px}
+.section-title{text-align:center;font-size:28px;margin-bottom:40px;color:var(--dark)}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.case-grid,.pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.card-item{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px #00000010}
+.card-item img{width:100%;height:200px;object-fit:cover}
+.card-body{padding:16px}
+.card-body h4{font-size:18px;margin-bottom:6px}
+.card-body p{color:#666;font-size:14px}
+.pkg-price{color:#dc2626;font-weight:bold;font-size:20px;margin:8px 0}
+footer{background:var(--dark);color:#fff;padding:40px 20px;text-align:center}
 </style>
 </head>
 <body>
-<header>
-  <div id="siteTitle">璟象装饰</div>
-  <div id="sitePhone">13800000000</div>
-</header>
-<div class="banner" id="bannerWrap"></div>
-
-<section>
-  <h2>装修案例</h2>
-  <div class="grid" id="caseWrap"></div>
+<nav>
+  <div class="nav-wrap">
+    <div class="logo" id="navName">璟象装饰</div>
+    <div class="nav-links">
+      <a href="#home">首页</a>
+      <a href="#about">关于我们</a>
+      <a href="#case">装修案例</a>
+      <a href="#pkg">整装套餐</a>
+      <a href="#contact">联系我们</a>
+    </div>
+  </div>
+</nav>
+<section class="banner" id="home">
+  <div class="banner-item">
+    <div class="banner-text">
+      <h2 id="bannerTitle">匠心整装，品质家装</h2>
+      <p id="bannerSub">一站式家装服务，设计、施工、售后一体化</p>
+      <a href="#contact" class="btn">免费预约报价</a>
+    </div>
+  </div>
 </section>
 
-<section>
-  <h2>整装套餐</h2>
-  <div class="grid" id="packageWrap"></div>
+<section class="container" id="about">
+  <h2 class="section-title">关于我们</h2>
+  <div class="about">
+    <div>
+      <h3 id="aboutName">璟象装饰</h3>
+      <p id="aboutDesc">专注家装、旧房改造、全屋整装，匠心设计，透明报价，一站式装修服务</p>
+    </div>
+    <div>
+      <a href="#contact" class="btn">立即咨询</a>
+    </div>
+  </div>
 </section>
 
-<footer>© <span id="footerName"></span> 装修公司</footer>
+<section class="container" id="case">
+  <h2 class="section-title">装修案例</h2>
+  <div class="case-grid" id="caseWrap"></div>
+</section>
 
+<section class="container" id="pkg">
+  <h2 class="section-title">整装套餐</h2>
+  <div class="pkg-grid" id="pkgWrap"></div>
+</section>
+
+<section class="container" id="contact">
+  <h2 class="section-title">联系我们</h2>
+  <p style="text-align:center;font-size:22px">📞 <span id="phone">13800000000</span></p>
+</section>
+
+<footer>
+  <p id="footerName">璟象装饰 ©版权所有</p>
+</footer>
 <script>
-const API = "https://zhuangxiu-api.2653709704.workers.dev";
-let cfg = {};
-async function init(){
-  const res = await fetch(`${API}/getConfig`);
-  cfg = await res.json();
-  document.getElementById("siteTitle").innerText = cfg.siteName;
-  document.getElementById("sitePhone").innerText = cfg.phone;
-  document.getElementById("footerName").innerText = cfg.siteName;
+// 读取同目录 config.json
+async function loadSite(){
+  let cfg;
+  try{
+    const res = await fetch("./config.json");
+    cfg = await res.json();
+  }catch(e){
+    cfg = {
+      siteName:"璟象装饰",
+      sitePhone:"13800000000",
+      siteDesc:"专注家装、旧房改造、全屋整装，匠心设计，透明报价，一站式装修服务",
+      banner:[{"title":"匠心整装，品质家装","img":""}],
+      caseList:[
+        {"title":"现代简约三房","desc":"120㎡｜现代简约","img":""}
+      ],
+      packageList:[
+        {"title":"刚需整装套餐","price":"899元/㎡","desc":"基础硬装+水电+墙面+地砖"}
+      ]
+    }
+  }
+  document.getElementById("navName").innerText = cfg.siteName;
+  document.getElementById("aboutName").innerText = cfg.siteName;
+  document.getElementById("aboutDesc").innerText = cfg.siteDesc;
+  document.getElementById("bannerTitle").innerText = cfg.banner[0]?.title;
+  document.getElementById("phone").innerText = cfg.sitePhone;
+  document.getElementById("footerName").innerText = cfg.siteName + " ©版权所有";
 
-  // 轮播
-  const bannerWrap = document.getElementById("bannerWrap");
-  bannerWrap.innerHTML = cfg.banner.map(item=>`
-    <div class="banner-item" style="background-image:url(${item.img})">${item.title}</div>
-  `).join("");
-
-  // 案例
+  // 渲染案例
   const caseWrap = document.getElementById("caseWrap");
-  caseWrap.innerHTML = cfg.caseList.map(item=>`
-    <div class="card">
-      <img src="${item.img}" alt="${item.title}">
-      <div class="info">
-        <h3>${item.title}</h3>
+  cfg.caseList.forEach(item=>{
+    caseWrap.innerHTML += `
+    <div class="card-item">
+      <img src="${item.img||'https://picsum.photos/id/1048/600/400'}" alt="${item.title}">
+      <div class="card-body">
+        <h4>${item.title}</h4>
         <p>${item.desc}</p>
       </div>
-    </div>
-  `).join("");
-
-  // 套餐
-  const packageWrap = document.getElementById("packageWrap");
-  packageWrap.innerHTML = cfg.packageList.map(item=>`
-    <div class="card">
-      <div class="info">
-        <h3>${item.title}</h3>
-        <p>价格：${item.price}</p>
+    </div>`
+  })
+  // 渲染套餐
+  const pkgWrap = document.getElementById("pkgWrap");
+  cfg.packageList.forEach(item=>{
+    pkgWrap.innerHTML += `
+    <div class="card-item">
+      <div class="card-body">
+        <h4>${item.title}</h4>
+        <div class="pkg-price">${item.price}</div>
+        <p>${item.desc}</p>
       </div>
-    </div>
-  `).join("");
+    </div>`
+  })
 }
-init();
+loadSite();
 </script>
 </body>
 </html>
+
