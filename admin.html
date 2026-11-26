@@ -5,156 +5,122 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>璟象装饰｜后台管理</title>
 <style>
-*{box-sizing:border-box;font-family:system-ui}
-body{max-width:1100px;margin:20px auto;padding:0 20px;background:#f5f7fa}
-.card{background:#fff;padding:20px;border-radius:10px;margin-bottom:16px;box-shadow:0 2px 8px #00000012}
-input,textarea,button{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px;font-size:15px}
-button{background:#2563eb;color:#fff;border:none;cursor:pointer;font-weight:bold}
+*{box-sizing:border-box;font-family:system-ui, sans-serif;}
+body{max-width:1100px;margin:24px auto;padding:0 20px;background:#f5f7fa;color:#222;}
+.card{background:#fff;padding:22px;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 10px #00000010;}
+h3{margin-top:0;color:#111;border-left:4px solid #2563eb;padding-left:10px}
+input,textarea,button{width:100%;padding:11px;margin:8px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}
+button{background:#2563eb;color:#fff;border:none;cursor:pointer;font-weight:500}
+button.success{background:#16a34a}
 button.danger{background:#dc2626}
-.upload-box{border:2px dashed #ccc;padding:20px;text-align:center;border-radius:8px}
-.preview-img{max-width:240px;margin:10px 0}
-.hidden{display:none}
-.group{display:flex;gap:10px}
-.group button{flex:1}
+.upload-box{border:2px dashed #ccc;padding:24px;text-align:center;border-radius:10px;margin:10px 0}
+.preview-img{max-width:280px;margin:10px 0;border-radius:6px}
+.row{display:flex;gap:12px}
+.row button{flex:1}
+.item-block{border:1px solid #eee;padding:14px;border-radius:8px;margin:10px 0}
 </style>
 </head>
 <body>
-<div id="loginBox" class="card">
-  <h3>🔐 后台登录</h3>
-  <input type="password" id="pwdInput" placeholder="输入管理密码">
-  <button onclick="login()">登录后台</button>
+<div class="card">
+  <h3>📷 图片上传（生成本地链接）</h3>
+  <div class="upload-box">
+    <input type="file" id="imgFile" accept="image/*">
+    <p>选择图片后自动生成预览链接，直接复制到下面表单</p>
+  </div>
+  <p>图片链接：<input id="imgLinkOut" readonly></p>
+  <img class="preview-img" id="imgPreview">
 </div>
 
-<div id="mainBox" class="hidden">
-  <div class="card">
-    <h3>📷 图片上传（自动生成链接）</h3>
-    <div class="upload-box">
-      <input type="file" id="imgFile" accept="image/*">
-      <button onclick="uploadImage()">上传图片</button>
-    </div>
-    <p>图片链接：<input id="imgLinkOut" readonly></p>
-    <img class="preview-img" id="imgPreview">
-  </div>
-
-  <div class="card">
-    <h3>🏢 基础信息</h3>
-    <label>公司名称</label>
-    <input id="siteName">
-    <label>联系电话</label>
-    <input id="sitePhone">
-    <button onclick="saveConfig()">保存全部修改</button>
-  </div>
-
-  <div class="card">
-    <h3>🏞️ 轮播Banner（JSON格式）</h3>
-    <textarea id="bannerArea" rows="6"></textarea>
-  </div>
-
-  <div class="card">
-    <h3>📋 装修案例</h3>
-    <textarea id="caseArea" rows="6"></textarea>
-  </div>
-
-  <div class="card">
-    <h3>📦 套餐内容</h3>
-    <textarea id="packageArea" rows="6"></textarea>
-  </div>
-
-  <div class="group">
-    <button onclick="loadConfig()">刷新数据</button>
-    <button class="danger" onclick="logout()">退出登录</button>
-  </div>
+<div class="card">
+  <h3>🏢 基础信息</h3>
+  <label>公司名称</label>
+  <input id="siteName" value="璟象装饰">
+  <label>联系电话</label>
+  <input id="sitePhone" value="13800000000">
+  <label>公司简介</label>
+  <textarea id="siteDesc" rows="4">专注家装、旧房改造、全屋整装，匠心设计，透明报价，一站式装修服务</textarea>
 </div>
 
+<div class="card">
+  <h3>🏞️ Banner轮播（格式：标题,图片链接）</h3>
+  <textarea id="bannerArea" rows="6">[
+  {"title":"匠心整装 · 品质家装","img":""},
+  {"title":"旧房翻新改造","img":""}
+]</textarea>
+</div>
+
+<div class="card">
+  <h3>📋 装修案例</h3>
+  <textarea id="caseArea" rows="8">[
+  {"title":"现代简约三房","desc":"120㎡｜现代简约","img":""},
+  {"title":"奶油风两房","desc":"89㎡｜奶油风","img":""}
+]</textarea>
+</div>
+
+<div class="card">
+  <h3>📦 整装套餐</h3>
+  <textarea id="packageArea" rows="8">[
+  {"title":"刚需整装套餐","price":"899元/㎡","desc":"基础硬装+水电+墙面+地砖"},
+  {"title":"品质整装套餐","price":"1199元/㎡","desc":"含定制柜、厨卫全套"}
+]</textarea>
+</div>
+
+<div class="row">
+  <button onclick="saveLocal()">保存到浏览器（临时）</button>
+  <button class="success" onclick="exportConfig()">导出config.json（上传到仓库！）</button>
+  <button class="danger" onclick="loadConfig()">读取配置</button>
+</div>
 <script>
-const API = "https://zhuangxiu-api.2653709704.workers.dev";
-let token = localStorage.getItem("adminToken");
-
-(async function(){
-  if(token){
-    await loadConfig();
-    document.getElementById("loginBox").classList.add("hidden");
-    document.getElementById("mainBox").classList.remove("hidden");
+// 图片转base64
+document.getElementById('imgFile').onchange = async function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const url = ev.target.result;
+    document.getElementById('imgLinkOut').value = url;
+    document.getElementById('imgPreview').src = url;
   }
-})()
-
-async function login(){
-  const pwd = document.getElementById("pwdInput").value.trim();
-  const res = await fetch(`${API}/login`,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({password:pwd})
-  })
-  const json = await res.json();
-  if(json.ok){
-    token = json.token;
-    localStorage.setItem("adminToken",token);
-    document.getElementById("loginBox").classList.add("hidden");
-    document.getElementById("mainBox").classList.remove("hidden");
-    await loadConfig();
-    alert("✅登录成功！");
-  }else{
-    alert("密码错误！");
-  }
+  reader.readAsDataURL(file);
 }
 
-async function uploadImage(){
-  const file = document.getElementById("imgFile").files[0];
-  if(!file) return alert("先选择图片");
-  if(file.size>200*1024) return alert("图片不能超过200KB！");
-  const fd = new FormData();
-  fd.append("img",file);
-  const res = await fetch(`${API}/uploadImg`,{
-    method:"POST",
-    headers:{"Authorization":`Bearer ${token}`},
-    body:fd
-  })
-  const json = await res.json();
-  if(json.ok){
-    document.getElementById("imgLinkOut").value = json.imgUrl;
-    document.getElementById("imgPreview").src = json.imgUrl;
-    alert("✅上传成功");
-  }else{
-    alert("上传失败："+json.msg);
+function getFormData(){
+  return {
+    siteName: document.getElementById('siteName').value,
+    sitePhone: document.getElementById('sitePhone').value,
+    siteDesc: document.getElementById('siteDesc').value,
+    banner: JSON.parse(document.getElementById('bannerArea').value),
+    caseList: JSON.parse(document.getElementById('caseArea').value),
+    packageList: JSON.parse(document.getElementById('packageArea').value)
   }
 }
-
-async function loadConfig(){
-  const res = await fetch(`${API}/getConfig`);
-  const cfg = await res.json();
-  document.getElementById("siteName").value = cfg.siteName;
-  document.getElementById("sitePhone").value = cfg.phone;
-  document.getElementById("bannerArea").value = JSON.stringify(cfg.banner,null,2);
-  document.getElementById("caseArea").value = JSON.stringify(cfg.caseList,null,2);
-  document.getElementById("packageArea").value = JSON.stringify(cfg.packageList,null,2);
+function setFormData(d){
+  document.getElementById('siteName').value = d.siteName;
+  document.getElementById('sitePhone').value = d.sitePhone;
+  document.getElementById('siteDesc').value = d.siteDesc;
+  document.getElementById('bannerArea').value = JSON.stringify(d.banner,null,2);
+  document.getElementById('caseArea').value = JSON.stringify(d.caseList,null,2);
+  document.getElementById('packageArea').value = JSON.stringify(d.packageList,null,2);
 }
-
-async function saveConfig(){
-  const payload = {
-    siteName: document.getElementById("siteName").value,
-    phone: document.getElementById("sitePhone").value,
-    banner: JSON.parse(document.getElementById("bannerArea").value),
-    caseList: JSON.parse(document.getElementById("caseArea").value),
-    packageList: JSON.parse(document.getElementById("packageArea").value)
-  }
-  const res = await fetch(`${API}/saveConfig`,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":`Bearer ${token}`
-    },
-    body:JSON.stringify(payload)
-  })
-  const json = await res.json();
-  if(json.ok) alert("✅保存成功，前台同步更新！");
-  else alert("保存失败："+json.msg);
+function saveLocal(){
+  localStorage.setItem('siteData',JSON.stringify(getFormData()));
+  alert("✅ 临时保存到浏览器缓存，清缓存会丢失！记得导出json文件");
 }
-
-function logout(){
-  localStorage.removeItem("adminToken");
-  token = null;
-  document.getElementById("loginBox").classList.remove("hidden");
-  document.getElementById("mainBox").classList.add("hidden");
+function loadConfig(){
+  const raw = localStorage.getItem('siteData');
+  if(raw){
+    setFormData(JSON.parse(raw));
+    alert("✅ 读取本地缓存成功");
+  }else alert("本地无缓存");
+}
+function exportConfig(){
+  const data = getFormData();
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = "config.json";
+  a.click();
+  alert("✅ 下载 config.json！把这个文件上传到github仓库，前台就会更新！");
 }
 </script>
 </body>
