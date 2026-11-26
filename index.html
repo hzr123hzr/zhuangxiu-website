@@ -3,93 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>潮悦设计事务所｜汕头装修设计、旧房改造、新房整装</title>
-<script src="config.js"></script>
+<title>璟象装饰</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, sans-serif}
-body{color:#333;background:#f8f8f8}
-header{background:#222;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:20px;font-weight:bold}
-nav a{color:#fff;text-decoration:none;margin-left:18px}
-.banner{background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('https://picsum.photos/id/1048/1600/600');background-size:cover;background-position:center;color:#fff;text-align:center;padding:100px 20px}
-.banner h1{font-size:36px;margin-bottom:12px}
-.banner p{font-size:18px;margin-bottom:24px}
-.btn{background:#c89b67;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;display:inline-block;border:none;cursor:pointer;font-size:16px}
-section{max-width:1200px;margin:60px auto;padding:0 20px}
-.title{text-align:center;font-size:28px;margin-bottom:40px}
-.case-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
-.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px #00000010}
-.card img{width:100%;height:220px;object-fit:cover}
-.card .info{padding:16px}
-.card h3{margin-bottom:8px}
-.pack{background:#fff;padding:30px;border-radius:12px;margin-bottom:20px}
-.pack h3{color:#c89b67;margin-bottom:10px}
-.contact{background:#222;color:#fff;padding:50px 20px;text-align:center}
-footer{text-align:center;padding:20px;background:#111;color:#aaa;font-size:14px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{color:#333}
+header{background:#222;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.banner{width:100%;height:320px;display:flex;overflow:hidden}
+.banner-item{flex:0 0 100%;height:100%;background-size:cover;background-position:center;display:flex;align-items:center;padding-left:60px;color:#fff;font-size:32px;font-weight:bold}
+section{max-width:1200px;margin:40px auto;padding:0 20px}
+h2{margin-bottom:20px;color:#222}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.card{border:1px solid #eee;border-radius:10px;overflow:hidden}
+.card img{width:100%;height:180px;object-fit:cover}
+.card .info{padding:12px}
+footer{background:#222;color:#fff;text-align:center;padding:24px;margin-top:40px}
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">潮悦设计事务所</div>
-  <nav>
-    <a href="#home">首页</a>
-    <a href="#case">装修案例</a>
-    <a href="#package">装修套餐</a>
-    <a href="#contact">联系我们</a>
-  </nav>
+  <div id="siteTitle">璟象装饰</div>
+  <div id="sitePhone">13800000000</div>
 </header>
-<div class="banner" id="home">
-  <h1>专注汕头整装｜旧房改造 · 新房装修</h1>
-  <p>免费上门量房｜设计方案｜报价预算</p>
-  <a href="#contact" class="btn">预约免费量房</a>
-</div>
-<section id="case">
-  <h2 class="title">精选装修案例</h2>
-  <div class="case-list" id="caseWrap"></div>
-</section>
-<section id="package">
-  <h2 class="title">装修套餐</h2>
-  <div id="packWrap"></div>
-</section>
-<section class="contact" id="contact">
-  <h2 class="title">联系我们</h2>
-  <p>电话：<span id="tel"></span></p>
-  <p>地址：<span id="addr"></span></p>
-  <br>
-  <a href="admin.html" class="btn">后台管理入口</a>
-</section>
-<footer>©2026 潮悦设计事务所 版权所有</footer>
-<script>
-function render(){
-  const site = SITE_CONFIG.base;
-  document.getElementById('tel').innerText = site.tel;
-  document.getElementById('addr').innerText = site.addr;
+<div class="banner" id="bannerWrap"></div>
 
-  const caseDom = document.getElementById('caseWrap');
-  caseDom.innerHTML = '';
-  SITE_CONFIG.cases.forEach(item=>{
-    caseDom.innerHTML += `
+<section>
+  <h2>装修案例</h2>
+  <div class="grid" id="caseWrap"></div>
+</section>
+
+<section>
+  <h2>整装套餐</h2>
+  <div class="grid" id="packageWrap"></div>
+</section>
+
+<footer>© <span id="footerName"></span> 装修公司</footer>
+
+<script>
+const API = "https://zhuangxiu-api.2653709704.workers.dev";
+let cfg = {};
+async function init(){
+  const res = await fetch(`${API}/getConfig`);
+  cfg = await res.json();
+  document.getElementById("siteTitle").innerText = cfg.siteName;
+  document.getElementById("sitePhone").innerText = cfg.phone;
+  document.getElementById("footerName").innerText = cfg.siteName;
+
+  // 轮播
+  const bannerWrap = document.getElementById("bannerWrap");
+  bannerWrap.innerHTML = cfg.banner.map(item=>`
+    <div class="banner-item" style="background-image:url(${item.img})">${item.title}</div>
+  `).join("");
+
+  // 案例
+  const caseWrap = document.getElementById("caseWrap");
+  caseWrap.innerHTML = cfg.caseList.map(item=>`
     <div class="card">
       <img src="${item.img}" alt="${item.title}">
       <div class="info">
         <h3>${item.title}</h3>
         <p>${item.desc}</p>
       </div>
-    </div>`
-  })
+    </div>
+  `).join("");
 
-  const packDom = document.getElementById('packWrap');
-  packDom.innerHTML = '';
-  SITE_CONFIG.packages.forEach(item=>{
-    packDom.innerHTML += `
-    <div class="pack">
-      <h3>${item.name}</h3>
-      <p>${item.desc}</p>
-      <p style="margin-top:10px;color:#c89b67;font-weight:bold">${item.price}</p>
-    </div>`
-  })
+  // 套餐
+  const packageWrap = document.getElementById("packageWrap");
+  packageWrap.innerHTML = cfg.packageList.map(item=>`
+    <div class="card">
+      <div class="info">
+        <h3>${item.title}</h3>
+        <p>价格：${item.price}</p>
+      </div>
+    </div>
+  `).join("");
 }
-render();
+init();
 </script>
 </body>
 </html>
