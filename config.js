@@ -1,6 +1,6 @@
 const SITE_CONFIG = {
   base: {
-    title: "璟象装饰",
+    title: "潮悦设计事务所",
     tel: "13800138000",
     addr: "广东汕头龙湖"
   },
